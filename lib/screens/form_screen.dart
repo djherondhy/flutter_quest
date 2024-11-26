@@ -60,132 +60,59 @@ class _FormScreenState extends State<FormScreen> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(top: 20.0, bottom: 8.0, left: 8.0, right: 8.0),
-                      child: TextFormField(
-                        controller: nameController,
-                        validator: (String? value) {
-                          if (value!.isEmpty) {
-                            return 'Insira um nome';
-                          }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          hintText: 'Nome',
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5),
-                            borderSide: const BorderSide(
-                              color: Colors.deepPurpleAccent,
-                              width: 2.0,
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5),
-                            borderSide: const BorderSide(
-                              color: Colors.deepPurple,
-                              width: 2.5,
-                            ),
-                          ),
-                          errorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5),
-                            borderSide: const BorderSide(color: Colors.red, width: 1.0),
-                          ),
-                          focusedErrorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5),
-                            borderSide:
-                            const BorderSide(color: Colors.redAccent, width: 1.0),
-                          ),
-                          fillColor: Colors.white,
-                          filled: true,
-                        ),
-                      ),
+                      padding: const EdgeInsets.only(
+                          top: 20.0, bottom: 8.0, left: 8.0, right: 8.0),
+                      child: TextInput(
+                          label: 'Nome',
+                          validator: (String? value) {
+                            if (value!.isEmpty) {
+                              return 'Este campo não pode ser vazio';
+                            }
+                            return null;
+                          },
+                          controller: nameController,
+                          textInputType: TextInputType.text),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: TextFormField(
-                        controller: classController,
-                        validator: (String? value) {
-                          if (value!.isEmpty) {
-                            return "Insira uma classe";
-                          }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          hintText: 'Classe',
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5),
-                            borderSide: const BorderSide(
-                              color: Colors.deepPurpleAccent,
-                              width: 2.0,
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5),
-                            borderSide: const BorderSide(
-                              color: Colors.deepPurple,
-                              width: 2.5,
-                            ),
-                          ),
-                          errorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5),
-                            borderSide: const BorderSide(color: Colors.red, width: 1.0),
-                          ),
-                          focusedErrorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5),
-                            borderSide:
-                            const BorderSide(color: Colors.redAccent, width: 1.0),
-                          ),
-                          fillColor: Colors.white,
-                          filled: true,
-                        ),
-                      ),
+                      child: TextInput(
+                          label: 'Classe',
+                          validator: (String? value) {
+                            if (value!.isEmpty) {
+                              return 'Este campo não pode ser vazio';
+                            }
+                            return null;
+                          },
+                          controller: classController,
+                          textInputType: TextInputType.text),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: TextFormField(
-                        keyboardType: TextInputType.number,
-                        controller: forceController,
-                        validator: (String? value) {
-                          if (value!.isEmpty ||
-                              int.parse(value) > 5 ||
-                              int.parse(value) < 1) {
-                            return 'Insira uma força entre 1 e 5';
-                          }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          hintText: 'Força',
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5),
-                            borderSide: const BorderSide(
-                              color: Colors.deepPurpleAccent,
-                              width: 2.0,
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5),
-                            borderSide: const BorderSide(
-                              color: Colors.deepPurple,
-                              width: 2.5,
-                            ),
-                          ),
-                          errorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5),
-                            borderSide: const BorderSide(color: Colors.red, width: 1.0),
-                          ),
-                          focusedErrorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5),
-                            borderSide:
-                                const BorderSide(color: Colors.redAccent, width: 1.0),
-                          ),
-                          fillColor: Colors.white,
-                          filled: true,
-                        ),
-                      ),
+                      child: TextInput(
+                          label: 'Força',
+                          validator: (String? value) {
+                            if (value!.isEmpty ||
+                                int.parse(value) > 5 ||
+                                int.parse(value) < 1) {
+                              return 'Insira uma força entre 1 e 5';
+                            }
+                            return null;
+                          },
+                          controller: forceController,
+                          textInputType: TextInputType.number),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: TextInput(label: 'Foto', validator: (String? value){
-                      }, controller: imageController, textInputType: TextInputType.text),
+                      child: TextInput(
+                          label: 'Foto',
+                          validator: (String? value) {
+                            if (value!.isEmpty) {
+                              return 'Este campo não pode ser vazio';
+                            }
+                            return null;
+                          },
+                          controller: imageController,
+                          textInputType: TextInputType.text),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 20.0),
@@ -236,6 +163,3 @@ class _FormScreenState extends State<FormScreen> {
     );
   }
 }
-
-
-
