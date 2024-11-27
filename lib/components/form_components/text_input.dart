@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class TextInput extends StatelessWidget {
+class TextInput extends StatefulWidget {
   final String label;
   final String? Function(String?)? validator;
   final TextEditingController? controller;
@@ -9,10 +9,20 @@ class TextInput extends StatelessWidget {
   TextInput({required this.label, required this.validator, required this.controller, required this.textInputType,super.key});
 
   @override
+  State<TextInput> createState() => _TextInputState();
+}
+
+class _TextInputState extends State<TextInput> {
+  @override
   Widget build(BuildContext context) {
     return TextFormField(
-      controller: controller,
-      keyboardType: textInputType,
+      onChanged: (value){
+        setState(() {
+          print(value);
+        });
+      },
+      controller: widget.controller,
+      keyboardType: widget.textInputType,
       validator: (String? value) {
         if (value!.isEmpty) {
           return 'Insira um nome';
@@ -20,7 +30,7 @@ class TextInput extends StatelessWidget {
         return null;
       },
       decoration: InputDecoration(
-        hintText: label,
+        hintText: widget.label,
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5),
           borderSide: const BorderSide(

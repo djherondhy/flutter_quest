@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:quest/components/forca.dart';
 
-
 class Personagem extends StatefulWidget {
-
   final String nome;
   final String classe;
   final int forca;
   final String foto;
+
   const Personagem(
       {required this.nome,
       required this.classe,
       required this.forca,
-        required this.foto,
+      required this.foto,
       super.key});
 
   @override
@@ -24,32 +23,37 @@ class _PersonagemState extends State<Personagem> {
 
   void vidaUp() {
     setState(() {
-      if(vida <=1){
-        vida+= (vida / widget.forca)/10;
+      if (vida <= 1) {
+        vida += (vida / widget.forca) / 10;
       }
-      if(vida>1){
-        vida =1;
+      if (vida > 1) {
+        vida = 1;
       }
     });
   }
 
   void vidaDown() {
     setState(() {
-      if(vida>=0){
-        vida-= (vida/ widget.forca)/10;
+      if (vida >= 0) {
+        vida -= (vida / widget.forca) / 10;
       }
-      if(vida<0){
-        vida=0;
+      if (vida < 0) {
+        vida = 0;
       }
     });
   }
 
-  String converteVida(double vida){
-    double vidaConvertida = vida*100;
+  String converteVida(double vida) {
+    double vidaConvertida = vida * 100;
     return vidaConvertida.toInt().toString();
   }
 
-
+  bool assetOrNetwork() {
+    if (widget.foto.contains('http')) {
+      return false;
+    }
+    return true;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,10 +87,15 @@ class _PersonagemState extends State<Personagem> {
                       height: 80,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(100),
-                        child: Image.asset(
-                          widget.foto,
-                          fit: BoxFit.cover,
-                        ),
+                        child: assetOrNetwork()
+                            ? Image.asset(
+                                widget.foto,
+                                fit: BoxFit.cover,
+                              )
+                            : Image.network(
+                                widget.foto,
+                                fit: BoxFit.cover,
+                              ),
                       ),
                     ),
                   ),
@@ -102,14 +111,15 @@ class _PersonagemState extends State<Personagem> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text( widget.nome,
+                              Text(
+                                widget.nome,
                                 style: const TextStyle(
                                     fontSize: 20,
                                     overflow: TextOverflow.ellipsis,
                                     color: Colors.deepPurple,
                                     fontWeight: FontWeight.bold),
                               ),
-                               Text(widget.classe,
+                              Text(widget.classe,
                                   style: const TextStyle(
                                       fontSize: 15,
                                       overflow: TextOverflow.ellipsis,
@@ -184,4 +194,3 @@ class _PersonagemState extends State<Personagem> {
     );
   }
 }
-
