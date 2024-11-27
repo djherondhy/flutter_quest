@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:quest/data/personagem_inherited.dart';
+import 'package:quest/screens/form_screen.dart';
 
 import 'package:quest/screens/initial_screen.dart';
 
@@ -23,7 +25,7 @@ class _MyAppState extends State<MyApp> {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const InitialScreen(),
+      home: PersonagemInherited(child: const InitialScreen()),
     );
   }
 }

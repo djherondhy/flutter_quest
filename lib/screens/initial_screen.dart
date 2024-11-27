@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quest/components/personagem.dart';
+import 'package:quest/data/personagem_inherited.dart';
+import 'package:quest/screens/form_screen.dart';
 
 class InitialScreen extends StatefulWidget {
   const InitialScreen({super.key});
@@ -9,74 +11,36 @@ class InitialScreen extends StatefulWidget {
 }
 
 class _InitialScreenState extends State<InitialScreen> {
-
-  bool opacidade = true;
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       appBar: AppBar(
-        title: const Text('OnePiece Quest', style: TextStyle(color: Colors.white)),
+        title:
+            const Text('OnePiece Quest', style: TextStyle(color: Colors.white)),
         backgroundColor: Colors.deepPurple,
-        leading: const Icon(Icons.gamepad, color: Colors.white,),
+        leading: const Icon(
+          Icons.gamepad,
+          color: Colors.white,
+        ),
       ),
-      body: AnimatedOpacity(
-        opacity: opacidade ? 1.0 : 0.0,
-        duration: const Duration(milliseconds: 500),
-        child: Container(
-          color: Colors.black12,
-          child: ListView(
-            children: const [
-              Personagem(
-                  nome:'Luffy',
-                  classe: 'Imperador',
-                  forca: 4,
-                  foto: 'assets/images/luffy.png'
-              ),
-              Personagem(
-                  nome:'Zoro',
-                  classe: 'Caçador',
-                  forca: 3,
-                  foto: 'assets/images/zoro.png'
-              ),
-              Personagem(
-                  nome:'Law',
-                  classe: 'Pirata',
-                  forca: 3,
-                  foto: 'assets/images/law.png'
-              ),
-              Personagem(
-                  nome:'Garp',
-                  classe: 'Marinheiro',
-                  forca: 4,
-                  foto: 'assets/images/garp.png'
-              ),
-              Personagem(
-                  nome:'Kaido',
-                  classe: 'Imperador',
-                  forca: 5,
-                  foto: 'assets/images/kaido.png'
-              ),
-              Personagem(
-                  nome:'Nekomamushi',
-                  classe: 'Mink',
-                  forca: 3,
-                  foto: 'assets/images/neko.png'
-              ),
-              SizedBox(
-                height: 120,
-              ),
-            ],
-          ),
+      body: Container(
+        color: Colors.black12,
+        child: ListView(
+          children: PersonagemInherited.of(context).personagemList,
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: (){
-          setState(() {
-            opacidade = !opacidade;
-          });
-
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (contextNew) => FormScreen(
+                personagemContext: context,
+              ),
+            ),
+          );
         },
-        child: const Icon(Icons.remove_red_eye),
+        child: const Icon(Icons.add),
       ),
     );
   }
