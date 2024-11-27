@@ -1,29 +1,31 @@
 import 'package:flutter/material.dart';
 
-class TextInput extends StatefulWidget {
+class UrlInput extends StatefulWidget {
   final String label;
   final String? Function(String?)? validator;
+  final String? Function(String?)? state;
   final TextEditingController? controller;
-  final TextInputType? textInputType;
 
-  TextInput({required this.label, required this.validator, required this.controller, required this.textInputType,super.key});
+
+  UrlInput({required this.label, required this.validator, required this.controller, required this.state, super.key});
 
   @override
-  State<TextInput> createState() => _TextInputState();
+  State<UrlInput> createState() => _UrlInputState();
 }
 
-class _TextInputState extends State<TextInput> {
+class _UrlInputState extends State<UrlInput> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      onChanged: (value){
-        setState(() {
-
-        });
-      },
+      onChanged: widget.state,
       controller: widget.controller,
-      keyboardType: widget.textInputType,
-      validator: widget.validator,
+      keyboardType: TextInputType.url,
+      validator: (String? value) {
+        if (value!.isEmpty) {
+          return 'Insira um nome';
+        }
+        return null;
+      },
       decoration: InputDecoration(
         hintText: widget.label,
         enabledBorder: OutlineInputBorder(

@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:quest/components/form_components/url_input.dart';
+import 'package:quest/data/personagem_inherited.dart';
 
-import '../components/text_input.dart';
+import '../components/form_components/text_input.dart';
 
 class FormScreen extends StatefulWidget {
-  const FormScreen({super.key});
+  const FormScreen({super.key, required this.personagemContext});
+
+  final BuildContext personagemContext;
 
   @override
   State<FormScreen> createState() => _FormScreenState();
@@ -16,6 +20,22 @@ class _FormScreenState extends State<FormScreen> {
   TextEditingController imageController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
+
+  void _addPersonagem() {
+    if (_formKey.currentState!.validate()) {
+      PersonagemInherited.of(widget.personagemContext).newPersonagem(
+        nameController.text,
+        classController.text,
+        int.parse(forceController.text),
+        imageController.text,
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Personagem registrado!')),
+      );
+      Navigator.pop(context);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -103,28 +123,24 @@ class _FormScreenState extends State<FormScreen> {
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: TextInput(
-                          label: 'Foto',
-                          validator: (String? value) {
-                            if (value!.isEmpty) {
-                              return 'Este campo não pode ser vazio';
-                            }
-                            return null;
-                          },
-                          controller: imageController,
-                          textInputType: TextInputType.text),
+                      child: UrlInput(
+                        label: 'Foto',
+                        state: (String? value) {
+                          setState(() {});
+                        },
+                        validator: (String? value) {
+                          if (value!.isEmpty) {
+                            return 'Este campo não pode ser vazio';
+                          }
+                          return null;
+                        },
+                        controller: imageController,
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 20.0),
                       child: ElevatedButton(
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            print(nameController.text);
-                            print(classController.text);
-                            print(forceController.text);
-                            print(imageController.text);
-                          }
-                        },
+                        onPressed: _addPersonagem,
                         style: ElevatedButton.styleFrom(
                             elevation: 5,
                             padding: const EdgeInsets.symmetric(
