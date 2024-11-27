@@ -7,38 +7,38 @@ class Personagem extends StatefulWidget {
   final int forca;
   final String foto;
 
-  const Personagem(
+  Personagem(
       {required this.nome,
       required this.classe,
       required this.forca,
       required this.foto,
       super.key});
-
+  double vida = 1;
   @override
   State<Personagem> createState() => _PersonagemState();
 }
 
 class _PersonagemState extends State<Personagem> {
-  double vida = 1;
+
 
   void vidaUp() {
     setState(() {
-      if (vida <= 1) {
-        vida += (vida / widget.forca) / 10;
+      if (widget.vida <= 1) {
+        widget.vida += (widget.vida / widget.forca) / 10;
       }
-      if (vida > 1) {
-        vida = 1;
+      if (widget.vida > 1) {
+        widget.vida = 1;
       }
     });
   }
 
   void vidaDown() {
     setState(() {
-      if (vida >= 0) {
-        vida -= (vida / widget.forca) / 10;
+      if (widget.vida >= 0) {
+        widget.vida -= (widget.vida / widget.forca) / 10;
       }
-      if (vida < 0) {
-        vida = 0;
+      if (widget.vida < 0) {
+        widget.vida = 0;
       }
     });
   }
@@ -175,14 +175,14 @@ class _PersonagemState extends State<Personagem> {
                     width: 200,
                     child: LinearProgressIndicator(
                       color: Colors.deepPurpleAccent[200],
-                      value: vida,
+                      value: widget.vida,
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
                   Row(
                     children: [
                       const Icon(Icons.favorite),
-                      Text(converteVida(vida)),
+                      Text(converteVida(widget.vida)),
                     ],
                   )
                 ],

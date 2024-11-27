@@ -37,6 +37,20 @@ class _FormScreenState extends State<FormScreen> {
     }
   }
 
+  bool valueValidator(String? value){
+    if(value != null && value.isEmpty){
+      return true;
+    }
+    return false;
+  }
+  bool forceValidator(String? value){
+    if(value!.isEmpty || int.parse(value) > 5 ||
+        int.parse(value) < 1){
+      return true;
+    }
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,7 +99,7 @@ class _FormScreenState extends State<FormScreen> {
                       child: TextInput(
                           label: 'Nome',
                           validator: (String? value) {
-                            if (value!.isEmpty) {
+                            if (valueValidator(value)) {
                               return 'Este campo não pode ser vazio';
                             }
                             return null;
@@ -98,7 +112,7 @@ class _FormScreenState extends State<FormScreen> {
                       child: TextInput(
                           label: 'Classe',
                           validator: (String? value) {
-                            if (value!.isEmpty) {
+                            if (valueValidator(value)) {
                               return 'Este campo não pode ser vazio';
                             }
                             return null;
@@ -111,9 +125,7 @@ class _FormScreenState extends State<FormScreen> {
                       child: TextInput(
                           label: 'Força',
                           validator: (String? value) {
-                            if (value!.isEmpty ||
-                                int.parse(value) > 5 ||
-                                int.parse(value) < 1) {
+                            if (forceValidator(value)) {
                               return 'Insira uma força entre 1 e 5';
                             }
                             return null;
@@ -125,11 +137,11 @@ class _FormScreenState extends State<FormScreen> {
                       padding: const EdgeInsets.all(8.0),
                       child: UrlInput(
                         label: 'Foto',
-                        state: (String? value) {
+                        state: (value) {
                           setState(() {});
                         },
                         validator: (String? value) {
-                          if (value!.isEmpty) {
+                          if (valueValidator(value)) {
                             return 'Este campo não pode ser vazio';
                           }
                           return null;

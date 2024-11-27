@@ -20,12 +20,7 @@ class _UrlInputState extends State<UrlInput> {
       onChanged: widget.state,
       controller: widget.controller,
       keyboardType: TextInputType.url,
-      validator: (String? value) {
-        if (value!.isEmpty) {
-          return 'Insira um nome';
-        }
-        return null;
-      },
+      validator: widget.validator,
       decoration: InputDecoration(
         hintText: widget.label,
         enabledBorder: OutlineInputBorder(
