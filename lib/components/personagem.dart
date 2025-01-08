@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quest/components/forca.dart';
+import 'package:quest/data/personagem_dao.dart';
 
 class Personagem extends StatefulWidget {
   final String nome;
@@ -41,6 +42,13 @@ class _PersonagemState extends State<Personagem> {
         widget.vida = 0;
       }
     });
+  }
+
+  void delete() {
+    PersonagemDao().delete(widget.nome);
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Personagem deletado, recarregue!')),
+    );
   }
 
   String converteVida(double vida) {
@@ -104,7 +112,7 @@ class _PersonagemState extends State<Personagem> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       SizedBox(
-                        width: 200,
+                        width: 170,
                         child: Padding(
                           padding: const EdgeInsets.all(5.0),
                           child: Column(
@@ -131,25 +139,45 @@ class _PersonagemState extends State<Personagem> {
                       ),
                     ],
                   ),
-                  Column(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      ElevatedButton(
-                        onPressed: vidaUp,
-                        style: ElevatedButton.styleFrom(
-                            elevation: 5,
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 10),
-                            backgroundColor: Colors.black12,
-                            shadowColor: Colors.transparent,
-                            minimumSize: const Size(40, 40),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(100))),
-                        child: const Icon(Icons.arrow_drop_up),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          ElevatedButton(
+                            onPressed: vidaUp,
+                            style: ElevatedButton.styleFrom(
+                                elevation: 5,
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 10),
+                                backgroundColor: Colors.black12,
+                                shadowColor: Colors.transparent,
+                                minimumSize: const Size(40, 40),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(100))),
+                            child: const Icon(Icons.arrow_drop_up),
+                          ),
+                          ElevatedButton(
+                            onPressed: vidaDown,
+                            style: ElevatedButton.styleFrom(
+                                elevation: 5,
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 10),
+                                backgroundColor: Colors.black12,
+                                shadowColor: Colors.transparent,
+                                minimumSize: const Size(40, 40),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(100))),
+                            child: const Icon(Icons.arrow_drop_down),
+                          ),
+
+                        ],
                       ),
                       ElevatedButton(
-                        onPressed: vidaDown,
+                        onPressed: delete,
                         style: ElevatedButton.styleFrom(
                             elevation: 5,
                             padding: const EdgeInsets.symmetric(
@@ -159,7 +187,7 @@ class _PersonagemState extends State<Personagem> {
                             minimumSize: const Size(40, 40),
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(100))),
-                        child: const Icon(Icons.arrow_drop_down),
+                        child: const Icon(Icons.delete),
                       ),
                     ],
                   ),

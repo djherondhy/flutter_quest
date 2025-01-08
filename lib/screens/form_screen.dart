@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quest/components/form_components/url_input.dart';
+import 'package:quest/components/personagem.dart';
+import 'package:quest/data/personagem_dao.dart';
 import 'package:quest/data/personagem_inherited.dart';
 
 import '../components/form_components/text_input.dart';
@@ -23,12 +25,15 @@ class _FormScreenState extends State<FormScreen> {
 
   void _addPersonagem() {
     if (_formKey.currentState!.validate()) {
-      PersonagemInherited.of(widget.personagemContext).newPersonagem(
-        nameController.text,
-        classController.text,
-        int.parse(forceController.text),
-        imageController.text,
+      PersonagemDao().save(
+        Personagem(
+            nome: nameController.text,
+            classe: classController.text,
+            forca: int.parse(forceController.text),
+            foto: imageController.text),
       );
+      
+
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Personagem registrado!')),
@@ -37,15 +42,15 @@ class _FormScreenState extends State<FormScreen> {
     }
   }
 
-  bool valueValidator(String? value){
-    if(value != null && value.isEmpty){
+  bool valueValidator(String? value) {
+    if (value != null && value.isEmpty) {
       return true;
     }
     return false;
   }
-  bool forceValidator(String? value){
-    if(value!.isEmpty || int.parse(value) > 5 ||
-        int.parse(value) < 1){
+
+  bool forceValidator(String? value) {
+    if (value!.isEmpty || int.parse(value) > 5 || int.parse(value) < 1) {
       return true;
     }
     return false;
