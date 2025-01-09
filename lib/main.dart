@@ -3,9 +3,12 @@ import 'package:quest/data/personagem_inherited.dart';
 import 'package:quest/screens/form_screen.dart';
 
 import 'package:quest/screens/initial_screen.dart';
+import 'package:quest/services/api_service.dart';
 
 void main() {
   runApp(const MyApp());
+  ApiService service = ApiService();
+  service.register("Olá mundo!");
 }
 
 class MyApp extends StatefulWidget {

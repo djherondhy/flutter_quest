@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:quest/components/personagem.dart';
+import 'package:quest/components/personagem_card.dart';
 
 class PersonagemInherited extends InheritedWidget {
   PersonagemInherited({
@@ -7,38 +7,38 @@ class PersonagemInherited extends InheritedWidget {
     required Widget child,
   }) : super(child: child);
 
-  final List<Personagem> personagemList = [
-    Personagem(
+  final List<PersonagemCard> personagemList = [
+    PersonagemCard(
       nome: 'Luffy',
       classe: 'Imperador',
       forca: 4,
       foto: 'assets/images/luffy.png',
     ),
-    Personagem(
+    PersonagemCard(
       nome: 'Zoro',
       classe: 'Caçador',
       forca: 3,
       foto: 'assets/images/zoro.png',
     ),
-    Personagem(
+    PersonagemCard(
       nome: 'Law',
       classe: 'Pirata',
       forca: 3,
       foto: 'assets/images/law.png',
     ),
-    Personagem(
+    PersonagemCard(
       nome: 'Garp',
       classe: 'Marinheiro',
       forca: 4,
       foto: 'assets/images/garp.png',
     ),
-    Personagem(
+    PersonagemCard(
       nome: 'Kaido',
       classe: 'Imperador',
       forca: 5,
       foto: 'assets/images/kaido.png',
     ),
-    Personagem(
+    PersonagemCard(
       nome: 'Nekomamushi',
       classe: 'Mink',
       forca: 3,
@@ -48,7 +48,7 @@ class PersonagemInherited extends InheritedWidget {
 
   void newPersonagem(String name, String classe, int force, String foto) {
     personagemList.add(
-      Personagem(nome: name, classe: classe, forca: force, foto: foto)
+      PersonagemCard(nome: name, classe: classe, forca: force, foto: foto)
     );
   }
 

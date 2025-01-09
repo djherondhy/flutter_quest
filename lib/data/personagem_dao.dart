@@ -1,4 +1,4 @@
-import 'package:quest/components/personagem.dart';
+import 'package:quest/components/personagem_card.dart';
 import 'package:quest/data/database.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -17,7 +17,7 @@ class PersonagemDao {
   static const String _force = 'force';
   static const String _image = 'image';
 
-  save(Personagem personagem) async {
+  save(PersonagemCard personagem) async {
     final Database database = await getDatabase();
     var itemExists = await find(personagem.nome);
     if (itemExists.isEmpty) {
@@ -33,7 +33,7 @@ class PersonagemDao {
     }
   }
 
-  Map<String, dynamic> toMap(Personagem personagem){
+  Map<String, dynamic> toMap(PersonagemCard personagem){
     final Map<String, dynamic> mapaDePersonagens = {};
     mapaDePersonagens[_name] = personagem.nome;
     mapaDePersonagens[_class] = personagem.classe;
@@ -42,7 +42,7 @@ class PersonagemDao {
     return mapaDePersonagens;
   }
 
-  Future<List<Personagem>> findAll() async {
+  Future<List<PersonagemCard>> findAll() async {
 
     final Database bancoDeDados = await getDatabase();
     final List<Map<String, dynamic>> result =
@@ -51,10 +51,10 @@ class PersonagemDao {
     return toList(result);
   }
 
-  List<Personagem> toList(List<Map<String, dynamic>> mapaDePersonagens) {
-    final List<Personagem> personagens = [];
+  List<PersonagemCard> toList(List<Map<String, dynamic>> mapaDePersonagens) {
+    final List<PersonagemCard> personagens = [];
     for (Map<String, dynamic> linha in mapaDePersonagens) {
-      final Personagem personagem = Personagem(
+      final PersonagemCard personagem = PersonagemCard(
           nome: linha[_name],
           classe: linha[_class],
           forca: linha[_force],
@@ -64,7 +64,7 @@ class PersonagemDao {
     return personagens;
   }
 
-  Future<List<Personagem>> find(String nomeDoPersonagem) async {
+  Future<List<PersonagemCard>> find(String nomeDoPersonagem) async {
 
     final Database bancoDeDados = await getDatabase();
     final List<Map<String, dynamic>> result = await bancoDeDados.query(

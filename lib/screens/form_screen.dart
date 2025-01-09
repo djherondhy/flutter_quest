@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quest/components/form_components/url_input.dart';
-import 'package:quest/components/personagem.dart';
+import 'package:quest/components/personagem_card.dart';
 import 'package:quest/data/personagem_dao.dart';
 import 'package:quest/data/personagem_inherited.dart';
 
@@ -26,7 +26,7 @@ class _FormScreenState extends State<FormScreen> {
   void _addPersonagem() {
     if (_formKey.currentState!.validate()) {
       PersonagemDao().save(
-        Personagem(
+        PersonagemCard(
             nome: nameController.text,
             classe: classController.text,
             forca: int.parse(forceController.text),

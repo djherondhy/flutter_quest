@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:quest/components/personagem.dart';
+import 'package:quest/components/personagem_card.dart';
 import 'package:quest/data/personagem_dao.dart';
 import 'package:quest/data/personagem_inherited.dart';
 import 'package:quest/screens/form_screen.dart';
@@ -31,10 +31,10 @@ class _InitialScreenState extends State<InitialScreen> {
       ),
       body: Container(
         color: Colors.black12,
-        child: FutureBuilder<List<Personagem>>(
+        child: FutureBuilder<List<PersonagemCard>>(
             future: PersonagemDao().findAll(),
             builder: (context, snapshot) {
-              List<Personagem>? items = snapshot.data;
+              List<PersonagemCard>? items = snapshot.data;
               switch (snapshot.connectionState) {
                 case ConnectionState.none:
                   return Center(child: Column(children: [CircularProgressIndicator(), Text('Carregando')],),);
@@ -51,7 +51,7 @@ class _InitialScreenState extends State<InitialScreen> {
                       return ListView.builder(
                           itemCount: items.length,
                           itemBuilder: (BuildContext context, int index) {
-                            final Personagem personagem = items[index];
+                            final PersonagemCard personagem = items[index];
                             return personagem;
                           });
                     }

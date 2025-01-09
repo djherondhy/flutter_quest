@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:quest/components/forca.dart';
 import 'package:quest/data/personagem_dao.dart';
 
-class Personagem extends StatefulWidget {
+class PersonagemCard extends StatefulWidget {
   final String nome;
   final String classe;
   final int forca;
   final String foto;
 
-  Personagem(
+  PersonagemCard(
       {required this.nome,
       required this.classe,
       required this.forca,
@@ -16,10 +16,10 @@ class Personagem extends StatefulWidget {
       super.key});
   double vida = 1;
   @override
-  State<Personagem> createState() => _PersonagemState();
+  State<PersonagemCard> createState() => _PersonagemCardState();
 }
 
-class _PersonagemState extends State<Personagem> {
+class _PersonagemCardState extends State<PersonagemCard> {
 
 
   void vidaUp() {
