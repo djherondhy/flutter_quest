@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:quest/components/form_components/url_input.dart';
-import 'package:quest/components/personagem.dart';
-import 'package:quest/data/personagem_dao.dart';
-import 'package:quest/data/personagem_inherited.dart';
+import 'package:quest/components/personagem_card.dart';
+
+import 'package:quest/models/Personagem.dart';
+import 'package:quest/services/api_service.dart';
 
 import '../components/form_components/text_input.dart';
 
@@ -25,20 +26,36 @@ class _FormScreenState extends State<FormScreen> {
 
   void _addPersonagem() {
     if (_formKey.currentState!.validate()) {
-      PersonagemDao().save(
+      ApiService service = ApiService();
+      service.register(
         Personagem(
-            nome: nameController.text,
-            classe: classController.text,
-            forca: int.parse(forceController.text),
-            foto: imageController.text),
-      );
-      
+          nome: nameController.text,
+          classe: classController.text,
+          forca: int.parse(forceController.text),
+          imagem: imageController.text,),
+      ).then((result) {
+       if(result){
+         ScaffoldMessenger.of(context).showSnackBar(
+           const SnackBar(content: Text('Personagem registrado!')),
+         );
+       }else{
+         ScaffoldMessenger.of(context).showSnackBar(
+           const SnackBar(content: Text('Houve um erro!')),
+         );
+       }
+
+        Navigator.pop(context);
+      }).catchError((error) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Houve um erro!')),
+        );
+        Navigator.pop(context);
+      });
 
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Personagem registrado!')),
-      );
-      Navigator.pop(context);
+
+
+
     }
   }
 
@@ -173,7 +190,7 @@ class _FormScreenState extends State<FormScreen> {
                             Text(
                               "Adicionar",
                               style:
-                                  TextStyle(color: Colors.white, fontSize: 18),
+                              TextStyle(color: Colors.white, fontSize: 18),
                             ),
                             Padding(
                               padding: EdgeInsets.only(left: 8.0),
