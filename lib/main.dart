@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:quest/data/personagem_inherited.dart';
+
+import 'package:quest/models/Personagem.dart';
 import 'package:quest/screens/form_screen.dart';
 
 import 'package:quest/screens/initial_screen.dart';
@@ -8,7 +9,8 @@ import 'package:quest/services/api_service.dart';
 void main() {
   runApp(const MyApp());
   ApiService service = ApiService();
-  service.register("Olá mundo!");
+  //service.register(Personagem(nome: "Zoro", classe: "Pirata", forca: 3, imagem: "https://i.pinimg.com/736x/52/c9/bc/52c9bcbaa70f35bb590f2e0e1371a487.jpg"));
+  service.getAll();
 }
 
 class MyApp extends StatefulWidget {
@@ -23,12 +25,19 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Flutter Quest',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
+        appBarTheme: AppBarTheme(
+          iconTheme: const IconThemeData(color: Colors.white),
+          titleTextStyle: TextStyle(
+            fontSize: 20,
+          )
+        ),
+
       ),
-      home: PersonagemInherited(child: const InitialScreen()),
+      home:const InitialScreen(),
     );
   }
 }

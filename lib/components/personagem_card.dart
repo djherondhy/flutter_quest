@@ -1,31 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:quest/components/forca.dart';
-import 'package:quest/data/personagem_dao.dart';
+
+import 'package:quest/models/Personagem.dart';
+import 'package:quest/services/api_service.dart';
 
 class PersonagemCard extends StatefulWidget {
-  final String nome;
-  final String classe;
-  final int forca;
-  final String foto;
+  final Personagem personagem;
+  final VoidCallback onDelete; // Callback para notificar exclusão
 
-  PersonagemCard(
-      {required this.nome,
-      required this.classe,
-      required this.forca,
-      required this.foto,
-      super.key});
+  PersonagemCard({
+    super.key,
+    required this.personagem,
+    required this.onDelete, // Recebe o callback
+  });
+
   double vida = 1;
+
   @override
   State<PersonagemCard> createState() => _PersonagemCardState();
 }
 
 class _PersonagemCardState extends State<PersonagemCard> {
 
+  void delete() async {
+    ApiService service = ApiService();
+    try {
+      await service.delete(widget.personagem.id);
+      widget.onDelete(); // Notifica o componente pai
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Personagem deletado com sucesso!')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Erro ao deletar personagem.')),
+      );
+    }
+  }
+
 
   void vidaUp() {
     setState(() {
       if (widget.vida <= 1) {
-        widget.vida += (widget.vida / widget.forca) / 10;
+        widget.vida += (widget.vida / widget.personagem.forca) / 10;
       }
       if (widget.vida > 1) {
         widget.vida = 1;
@@ -36,7 +52,7 @@ class _PersonagemCardState extends State<PersonagemCard> {
   void vidaDown() {
     setState(() {
       if (widget.vida >= 0) {
-        widget.vida -= (widget.vida / widget.forca) / 10;
+        widget.vida -= (widget.vida / widget.personagem.forca) / 10;
       }
       if (widget.vida < 0) {
         widget.vida = 0;
@@ -44,12 +60,7 @@ class _PersonagemCardState extends State<PersonagemCard> {
     });
   }
 
-  void delete() {
-    PersonagemDao().delete(widget.nome);
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Personagem deletado, recarregue!')),
-    );
-  }
+
 
   String converteVida(double vida) {
     double vidaConvertida = vida * 100;
@@ -57,7 +68,7 @@ class _PersonagemCardState extends State<PersonagemCard> {
   }
 
   bool assetOrNetwork() {
-    if (widget.foto.contains('http')) {
+    if (widget.personagem.imagem.contains('http')) {
       return false;
     }
     return true;
@@ -97,11 +108,11 @@ class _PersonagemCardState extends State<PersonagemCard> {
                         borderRadius: BorderRadius.circular(100),
                         child: assetOrNetwork()
                             ? Image.asset(
-                                widget.foto,
+                                widget.personagem.imagem,
                                 fit: BoxFit.cover,
                               )
                             : Image.network(
-                                widget.foto,
+                                widget.personagem.imagem,
                                 fit: BoxFit.cover,
                               ),
                       ),
@@ -120,19 +131,19 @@ class _PersonagemCardState extends State<PersonagemCard> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                widget.nome,
+                                widget.personagem.nome,
                                 style: const TextStyle(
                                     fontSize: 20,
                                     overflow: TextOverflow.ellipsis,
                                     color: Colors.deepPurple,
                                     fontWeight: FontWeight.bold),
                               ),
-                              Text(widget.classe,
+                              Text(widget.personagem.classe,
                                   style: const TextStyle(
                                       fontSize: 15,
                                       overflow: TextOverflow.ellipsis,
                                       color: Colors.blueGrey)),
-                              Forca(forcaValue: widget.forca),
+                              Forca(forcaValue: widget.personagem.forca),
                             ],
                           ),
                         ),
