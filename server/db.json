@@ -1,3 +1,12 @@
 {
-  "personagens": []
+  "users": [],
+  "personagens": [
+    {
+      "id": "d076",
+      "nome": "Luffy",
+      "forca": 5,
+      "classe": "Pirata",
+      "imagem": "https://i.pinimg.com/736x/10/21/8e/10218e972f966c2ac150d89c3781d7ed.jpg"
+    }
+  ]
 }

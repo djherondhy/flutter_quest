@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'package:quest/models/Personagem.dart';
-import 'package:quest/screens/form_screen.dart';
-
-import 'package:quest/screens/initial_screen.dart';
+import 'package:quest/screens/login_screen.dart';
 import 'package:quest/services/api_service.dart';
 
 void main() {
@@ -37,7 +33,7 @@ class _MyAppState extends State<MyApp> {
         ),
 
       ),
-      home:const InitialScreen(),
+      home:const LoginScreen(),
     );
   }
 }
