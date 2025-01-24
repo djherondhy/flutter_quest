@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:quest/services/auth_service.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class LoginScreen extends StatelessWidget {
+  LoginScreen({super.key});
 
-  @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
+  TextEditingController _usernameController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+  AuthService service = AuthService();
   @override
   Widget build(BuildContext context) {
+    login() {
+      String username = _usernameController.text;
+      String password = _passwordController.text;
+      service.login(username: username, password: password);
+      print('$username / $password');
+    }
+
     return Scaffold(
       body: Container(
-
         decoration: const BoxDecoration(
           color: Colors.black,
           image: DecorationImage(
@@ -27,12 +32,12 @@ class _LoginScreenState extends State<LoginScreen> {
           children: [
             Expanded(
               flex: 1,
-              child: Container(
+              child: SizedBox(
                 width: 300,
                 child: Center(
                   child: ClipRRect(
-
-                    child: Image.network("https://logosmarcas.net/wp-content/uploads/2021/10/One-Piece-Logo.png"),
+                    child: Image.network(
+                        "https://logosmarcas.net/wp-content/uploads/2021/10/One-Piece-Logo.png"),
                   ),
                 ),
               ),
@@ -40,7 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
             Expanded(
               flex: 2,
               child: Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(topLeft: Radius.circular(70)),
                 ),
@@ -49,15 +54,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(30.0),
                         child: Text(
-                          "Bem Vindo Pirata!",
+                          "Bem Vindo Capitão!",
                           style: GoogleFonts.inter(
-                            fontSize: 25,
-                            decoration: TextDecoration.none,
-                            color: Colors.deepPurpleAccent,
-                            fontWeight: FontWeight.bold
-                          ),
+                              fontSize: 25,
+                              decoration: TextDecoration.none,
+                              color: Colors.deepPurpleAccent,
+                              fontWeight: FontWeight.bold),
                         ),
                       ),
                       SizedBox(
@@ -72,16 +76,18 @@ class _LoginScreenState extends State<LoginScreen> {
                                   right: 30.0,
                                   bottom: 8.0),
                               child: TextFormField(
+                                controller: _usernameController,
                                 decoration: InputDecoration(
                                   hintText: 'Usuário',
                                   enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
+                                      borderSide: const BorderSide(
                                           color: Colors.deepPurpleAccent,
                                           width: 2.0),
                                       borderRadius: BorderRadius.circular(30)),
                                   focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.deepPurpleAccent, width: 2.0),
+                                      borderSide: const BorderSide(
+                                          color: Colors.deepPurpleAccent,
+                                          width: 2.0),
                                       borderRadius: BorderRadius.circular(30)),
                                 ),
                               ),
@@ -93,28 +99,30 @@ class _LoginScreenState extends State<LoginScreen> {
                                   right: 30.0,
                                   bottom: 8.0),
                               child: TextFormField(
+                                obscureText: true,
+                                controller: _passwordController,
                                 decoration: InputDecoration(
                                   hintText: 'Senha',
                                   enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
+                                      borderSide: const BorderSide(
                                           color: Colors.deepPurpleAccent,
                                           width: 2.0),
                                       borderRadius: BorderRadius.circular(30)),
                                   focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.deepPurpleAccent, width: 2.0),
+                                      borderSide: const BorderSide(
+                                          color: Colors.deepPurpleAccent,
+                                          width: 2.0),
                                       borderRadius: BorderRadius.circular(30)),
                                 ),
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 8.0,
-                                  bottom: 8.0),
+                              padding:
+                                  const EdgeInsets.only(top: 8.0, bottom: 8.0),
                               child: SizedBox(
                                 width: 150,
                                 child: ElevatedButton(
-                                  onPressed: () {},
+                                  onPressed: login,
                                   style: ElevatedButton.styleFrom(
                                       elevation: 5,
                                       padding: const EdgeInsets.symmetric(
@@ -122,23 +130,25 @@ class _LoginScreenState extends State<LoginScreen> {
                                       backgroundColor: Colors.deepPurpleAccent,
                                       shadowColor: Colors.transparent,
                                       shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(100))),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          "Entrar",
-                                          style: GoogleFonts.inter(
-                                            fontSize: 15,
-                                            decoration: TextDecoration.none,
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(100))),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "Entrar",
+                                        style: GoogleFonts.inter(
+                                          fontSize: 15,
+                                          decoration: TextDecoration.none,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
+                                ),
                               ),
                             ),
                           ],

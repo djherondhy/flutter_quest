@@ -5,7 +5,7 @@ import 'package:quest/models/Personagem.dart';
 import 'package:quest/services/http_interceptors.dart';
 
 class ApiService {
-  static const String url = "http://127.0.0.1:8000/api/";
+  static const String url = "http://10.0.2.2:8000/api/";
   static const String resource = "characters/";
   static const String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM3NDc0MzU4LCJpYXQiOjE3Mzc0NzQwNTgsImp0aSI6IjBjZDc0MjFhMTk1NTRlMTU5OGJmN2I1YmI4Y2RhMzViIiwidXNlcl9pZCI6MX0.f8qqkz43GbaR9s9JibzWUqfoHYUR2q9qi5-Ov9bHdEQ";
 
