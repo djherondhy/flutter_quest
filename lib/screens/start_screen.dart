@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:quest/screens/login_screen.dart';
+import 'package:quest/screens/register_screen.dart';
 
 class StartScreen extends StatefulWidget {
   const StartScreen({super.key});
@@ -120,7 +121,13 @@ class _StartScreenState extends State<StartScreen> {
                           SizedBox(
                             width: 150,
                             child: ElevatedButton(
-                              onPressed: () {},
+                              onPressed:  () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (contextNew) => RegisterScreen()),
+                                );
+                              },
                               style: ElevatedButton.styleFrom(
                                 elevation: 5,
                                 padding: const EdgeInsets.symmetric(
