@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:quest/components/personagem_card.dart';
 import 'package:quest/screens/form_screen.dart';
@@ -59,18 +57,19 @@ class _InitialScreenState extends State<InitialScreen> {
   void refresh() async {
     String? token = await _returnToken();
     if (token != null) {
-      setState(() async {
-        if(await verifyToken()){
+      bool isValid = await verifyToken();
+      if (isValid) {
+        setState(() {
           personagens = service.getAll(token);
-        }else{
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (contextNew) => StartScreen()),
-          );
-        }
-
-      });
+        });
+      } else {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (contextNew) => StartScreen(),
+          ),
+        );
+      }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Erro ao obter token.')),

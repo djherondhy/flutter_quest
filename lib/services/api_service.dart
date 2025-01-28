@@ -40,8 +40,9 @@ class ApiService {
 
   Future<bool> isTokenValid(String token) async {
     final response = await client.post(
-      Uri.parse("http://10.0.2.2:8000/api/token/verify/"),  // Supondo que este seja o endpoint para validar o token
-      body:{
+      Uri.parse("http://10.0.2.2:8000/api/token/verify/"),
+      // Supondo que este seja o endpoint para validar o token
+      body: {
         "token": token
       },
     );
@@ -56,12 +57,11 @@ class ApiService {
   }
 
 
-
   Future<List<Personagem>> getAll(String token) async {
     // Verificar se o token é válido antes de fazer a requisição
     bool isValid = await isTokenValid(token);
     if (!isValid) {
-      throw UnauthorizedException();  // Lança exceção caso o token não seja válido
+      throw UnauthorizedException(); // Lança exceção caso o token não seja válido
     }
 
     // Agora que sabemos que o token é válido, continuamos com a requisição
@@ -82,13 +82,16 @@ class ApiService {
   }
 
 
+  Future<bool> delete(String? id, String Token) async {
+    final Uri deleteUri = Uri.parse('${getURL()}$id/');
 
-  Future<bool> delete(String? id) async {
-    final Uri deleteUri = Uri.parse('${getURL()}$id');
+    http.Response response = await client.delete(deleteUri,
+      headers: {
+      "Authorization": "Bearer $Token",
+      "Content-Type": "application/json",
+      },);
 
-    http.Response response = await client.delete(deleteUri);
-
-    if (response.statusCode == 200) {
+    if (response.statusCode == 204) {
       return true; // Sucesso
     } else {
       throw Exception('Erro ao deletar o personagem com ID: $id');

@@ -27,7 +27,7 @@ class CharacterDetailView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        return Character.objects.filter(created_by=self.request.user)
+        return Character.objects.filter(user=self.request.user)
 
 class UserCharacterListView(generics.ListAPIView):
     serializer_class = CharacterSerializer

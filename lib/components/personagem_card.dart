@@ -3,6 +3,7 @@ import 'package:quest/components/forca.dart';
 
 import 'package:quest/models/Personagem.dart';
 import 'package:quest/services/api_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PersonagemCard extends StatefulWidget {
   final Personagem personagem;
@@ -20,20 +21,28 @@ class PersonagemCard extends StatefulWidget {
   State<PersonagemCard> createState() => _PersonagemCardState();
 }
 
+Future<String?> _returnToken() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  print(prefs.getString("access"));
+  return prefs.getString("access");
+}
+
 class _PersonagemCardState extends State<PersonagemCard> {
 
   void delete() async {
     ApiService service = ApiService();
     try {
-      await service.delete(widget.personagem.id);
+      String? token = await _returnToken();
+      await service.delete(widget.personagem.id, token!);
       widget.onDelete(); // Notifica o componente pai
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Personagem deletado com sucesso!')),
+        const SnackBar(content: Text('Personagem deletado com sucesso!'), backgroundColor: Colors.green,),
       );
     } catch (e) {
+
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Erro ao deletar personagem.')),
-      );
+        const SnackBar(content: Text('Erro ao deletar pesonagem'), backgroundColor: Colors.red,
+        ));
     }
   }
 
