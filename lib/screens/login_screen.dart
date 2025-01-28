@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:quest/screens/initial_screen.dart';
 import 'package:quest/services/auth_service.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -8,13 +9,29 @@ class LoginScreen extends StatelessWidget {
   TextEditingController _usernameController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   AuthService service = AuthService();
+
   @override
   Widget build(BuildContext context) {
-    login() {
+    login() async {
       String username = _usernameController.text;
       String password = _passwordController.text;
-      service.login(username: username, password: password);
-      print('$username / $password');
+      try {
+        bool response =
+            await service.login(username: username, password: password);
+        if (response) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (contextNew) => InitialScreen()),
+          );
+        }
+      } on UserNotFindException {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Usuário ou senha incorretos.'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
 
     return Scaffold(

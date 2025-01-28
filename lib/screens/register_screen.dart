@@ -64,129 +64,137 @@ class RegisterScreen extends StatelessWidget {
             ),
           ),
         ),
-        child: Column(
-          children: [
-            Expanded(
-              flex: 1,
-              child: SizedBox(
-                width: 300,
-                child: Center(
-                  child: ClipRRect(
-                    child: Image.network(
-                      "https://logosmarcas.net/wp-content/uploads/2021/10/One-Piece-Logo.png",
+        child: SafeArea( // Garante que o conteúdo não sobreponha a barra de status
+          child: Column(
+            children: [
+              Expanded(
+                flex: 1,
+                child: SizedBox(
+                  width: 300,
+                  child: Center(
+                    child: ClipRRect(
+                      child: Image.network(
+                        "https://logosmarcas.net/wp-content/uploads/2021/10/One-Piece-Logo.png",
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-            Expanded(
-              flex: 2,
-              child: Container(
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(topLeft: Radius.circular(70)),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 30.0),
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(30.0),
-                          child: Text(
-                            "Vamos Iniciar Sua Jornada!",
-                            style: GoogleFonts.inter(
-                              fontSize: 25,
-                              decoration: TextDecoration.none,
-                              color: Colors.deepPurpleAccent,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 30.0, vertical: 8.0),
-                          child: TextFormField(
-                            controller: _usernameController,
-                            decoration:
-                            buildInputDecoration('Crie seu nome de usuário'),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Por favor, insira um nome de usuário';
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 30.0, vertical: 8.0),
-                          child: TextFormField(
-                            obscureText: true,
-                            controller: _passwordController,
-                            decoration: buildInputDecoration('Crie uma senha'),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Por favor, insira uma senha';
-                              } else if (value.length < 6) {
-                                return 'A senha deve ter pelo menos 6 caracteres';
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 30.0, vertical: 8.0),
-                          child: TextFormField(
-                            obscureText: true,
-                            controller: _confirmPasswordController,
-                            decoration:
-                            buildInputDecoration('Confirme sua senha'),
-                            validator: (value) {
-                              if (value != _passwordController.text) {
-                                return 'As senhas não coincidem';
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
-                          child: SizedBox(
-                            width: 150,
-                            child: ElevatedButton(
-                              onPressed: register,
-                              style: ElevatedButton.styleFrom(
-                                elevation: 5,
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 15),
-                                backgroundColor: Colors.deepPurpleAccent,
-                                shadowColor: Colors.transparent,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(100),
-                                ),
-                              ),
+              Expanded(
+                flex: 2,
+                child: Container(
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(70)),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 30.0),
+                    child: SingleChildScrollView( // Torna o conteúdo rolável
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(30.0),
                               child: Text(
-                                "Registrar",
+                                "Vamos Iniciar Sua Jornada!",
                                 style: GoogleFonts.inter(
-                                  fontSize: 15,
+                                  fontSize: 25,
                                   decoration: TextDecoration.none,
-                                  color: Colors.white,
+                                  color: Colors.deepPurpleAccent,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ),
-                          ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 30.0, vertical: 8.0),
+                              child: TextFormField(
+                                controller: _usernameController,
+                                decoration:
+                                buildInputDecoration(
+                                    'Crie seu nome de usuário'),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Por favor, insira um nome de usuário';
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 30.0, vertical: 8.0),
+                              child: TextFormField(
+                                obscureText: true,
+                                controller: _passwordController,
+                                decoration: buildInputDecoration(
+                                    'Crie uma senha'),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Por favor, insira uma senha';
+                                  } else if (value.length < 6) {
+                                    return 'A senha deve ter pelo menos 6 caracteres';
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 30.0, vertical: 8.0),
+                              child: TextFormField(
+                                obscureText: true,
+                                controller: _confirmPasswordController,
+                                decoration:
+                                buildInputDecoration('Confirme sua senha'),
+                                validator: (value) {
+                                  if (value != _passwordController.text) {
+                                    return 'As senhas não coincidem';
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 8.0, bottom: 8.0),
+                              child: SizedBox(
+                                width: 150,
+                                child: ElevatedButton(
+                                  onPressed: register,
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: 5,
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 15),
+                                    backgroundColor: Colors.deepPurpleAccent,
+                                    shadowColor: Colors.transparent,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(100),
+                                    ),
+                                  ),
+                                  child: Text(
+                                    "Registrar",
+                                    style: GoogleFonts.inter(
+                                      fontSize: 15,
+                                      decoration: TextDecoration.none,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

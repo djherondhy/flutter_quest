@@ -13,7 +13,7 @@ class AuthService {
     interceptors: [LoggingInterceptor()],
   );
 
-  Future<String> login({required String username, required String password}) async {
+  Future<bool> login({required String username, required String password}) async {
     http.Response response = await client.post(
       Uri.parse('${url}token/'),
       body:{
@@ -23,10 +23,11 @@ class AuthService {
     );
 
     if(response.statusCode != 200){
-      throw HttpException(response.body);
+        throw UserNotFindException();
     }
+
     saveUserInfo(response.body);
-    return response.body.toString();
+    return true;
   }
 
   register({required String username, required String password}) async {
@@ -39,7 +40,8 @@ class AuthService {
     );
 
     if(response.statusCode != 201){
-      throw HttpException(response.body);
+      print(response.statusCode);
+
     }
 
   }
@@ -53,4 +55,8 @@ class AuthService {
     print(prefs.getString("access"));
 
   }
+}
+
+class UserNotFindException implements Exception{
+
 }

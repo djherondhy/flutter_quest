@@ -1,21 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:quest/screens/initial_screen.dart';
 import 'package:quest/screens/login_screen.dart';
 import 'package:quest/screens/start_screen.dart';
 import 'package:quest/services/api_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
-  runApp(const MyApp());
-  ApiService service = ApiService();
-  //service.register(Personagem(nome: "Zoro", classe: "Pirata", forca: 3, imagem: "https://i.pinimg.com/736x/52/c9/bc/52c9bcbaa70f35bb590f2e0e1371a487.jpg"));
-  service.getAll();
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  bool isLogged = await verifyToken();
+
+  runApp(MyApp(isLogged: isLogged,));
+
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+Future<bool> verifyToken() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String? token = prefs.getString("access");
+  ApiService service = ApiService();
+  if (token != null) {
+    bool isValid = await service.isTokenValid(token!);
+    if(isValid){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+  return false;
+}
+
+
+class MyApp extends StatefulWidget{
+  final bool isLogged;
+  const MyApp({super.key, required this.isLogged});
 
   @override
   State<MyApp> createState() => _MyAppState();
 }
+
 
 class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
@@ -26,15 +48,15 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
-        appBarTheme: AppBarTheme(
-          iconTheme: const IconThemeData(color: Colors.white),
+        appBarTheme: const AppBarTheme(
+          iconTheme: IconThemeData(color: Colors.white),
           titleTextStyle: TextStyle(
             fontSize: 20,
           )
         ),
 
       ),
-      home:const StartScreen(),
+      home:(widget.isLogged) ?  const InitialScreen() :  const StartScreen(),
     );
   }
 }

@@ -1,7 +1,11 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:quest/components/personagem_card.dart';
 import 'package:quest/screens/form_screen.dart';
+import 'package:quest/screens/start_screen.dart';
 import 'package:quest/services/api_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/Personagem.dart';
 
@@ -14,18 +18,64 @@ class InitialScreen extends StatefulWidget {
 
 class _InitialScreenState extends State<InitialScreen> {
   ApiService service = ApiService();
+
+  Future<String?> _returnToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    print(prefs.getString("access"));
+    return prefs.getString("access");
+  }
+
   late Future<List<Personagem>> personagens;
 
   @override
-  void initState() {
+  initState() {
     super.initState();
-    personagens = service.getAll(); // Inicializa a lista
+    _initializePersonagens();
   }
 
-  void refresh() {
-    setState(() {
-      personagens = service.getAll(); // Atualiza a lista
-    });
+  Future<bool> verifyToken() async {
+    String? token = await _returnToken();
+    bool isValid = await service.isTokenValid(token!);
+    if (!isValid) {
+      return false;
+    }
+
+    return true;
+  }
+
+  void _initializePersonagens() async {
+    String? token = await _returnToken();
+    if (token != null) {
+      setState(() {
+        personagens = service.getAll(token);
+      });
+    } else {
+      setState(() {
+        personagens = Future.error("Token não encontrado.");
+      });
+    }
+  }
+
+  void refresh() async {
+    String? token = await _returnToken();
+    if (token != null) {
+      setState(() async {
+        if(await verifyToken()){
+          personagens = service.getAll(token);
+        }else{
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (contextNew) => StartScreen()),
+          );
+        }
+
+      });
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Erro ao obter token.')),
+      );
+    }
   }
 
   @override
@@ -46,6 +96,10 @@ class _InitialScreenState extends State<InitialScreen> {
             onPressed: refresh, // Atualiza ao pressionar
             icon: const Icon(Icons.refresh),
           ),
+          IconButton(
+            onPressed: refresh, // Atualiza ao pressionar
+            icon: const Icon(Icons.more_vert),
+          ),
         ],
       ),
       body: Container(
@@ -58,8 +112,12 @@ class _InitialScreenState extends State<InitialScreen> {
                 child: CircularProgressIndicator(),
               );
             } else if (snapshot.hasError) {
-              return const Center(
-                child: Text('Erro ao carregar personagens.'),
+              return Center(
+                child: Text(
+                  'Erro ao carregar personagens: ${snapshot.error}',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(color: Colors.red),
+                ),
               );
             } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
               return ListView.builder(

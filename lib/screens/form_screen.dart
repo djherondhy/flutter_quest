@@ -4,6 +4,7 @@ import 'package:quest/components/personagem_card.dart';
 
 import 'package:quest/models/Personagem.dart';
 import 'package:quest/services/api_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../components/form_components/text_input.dart';
 
@@ -23,34 +24,50 @@ class _FormScreenState extends State<FormScreen> {
   TextEditingController imageController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
+  Future<String?> _returnToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    print(prefs.getString("access"));
+    return prefs.getString("access");
+  }
 
-  void _addPersonagem() {
+  void _addPersonagem() async{
+
     if (_formKey.currentState!.validate()) {
-      ApiService service = ApiService();
-      service.register(
-        Personagem(
-          nome: nameController.text,
-          classe: classController.text,
-          forca: int.parse(forceController.text),
-          imagem: imageController.text,),
-      ).then((result) {
-       if(result){
-         ScaffoldMessenger.of(context).showSnackBar(
-           const SnackBar(content: Text('Personagem registrado!')),
-         );
-       }else{
-         ScaffoldMessenger.of(context).showSnackBar(
-           const SnackBar(content: Text('Houve um erro!')),
-         );
-       }
+      String? token = await _returnToken();
+      if (token != null) {
+        ApiService service = ApiService();
+        service.register(
+            Personagem(
+              nome: nameController.text,
+              classe: classController.text,
+              forca: int.parse(forceController.text),
+              imagem: imageController.text,),token,
+        ).then((result) {
+          if(result){
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Personagem registrado!')),
+            );
+          }else{
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Houve um erro!')),
+            );
+          }
 
-        Navigator.pop(context);
-      }).catchError((error) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Houve um erro!')),
-        );
-        Navigator.pop(context);
-      });
+          Navigator.pop(context);
+        }).catchError((error) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Houve um erro!')),
+          );
+          Navigator.pop(context);
+        });
+
+      } else {
+        setState(() {
+          print(Future.error("Token não encontrado."));
+        });
+      }
+
+
 
 
 
